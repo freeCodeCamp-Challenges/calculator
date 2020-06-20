@@ -103,9 +103,14 @@ const Calculator = props => {
   const [storedNumber, setStoredNumber] = useState(0);
   // const [history, setHistory] = useState("0");
   const [functionType, setFunctionType] = useState("");
+  const [previousFunctionType, setPreviousFunctionType] = useState("");
 
+  console.log("//////////////////////////////");
+  console.log("previousFunctionType out", previousFunctionType);
+  console.log("functionType out", functionType);
   console.log("storedNumber out", storedNumber);
-  // console.log("number out", number);
+  console.log("number out", number);
+  console.log("functionType out", functionType);
 
   // If after zero comes a number replace zero with the number
   //  if (number.match(/[^0][0-9]/)) {
@@ -121,19 +126,34 @@ const Calculator = props => {
     switch (functionType) {
       case "add":
         setNumber(
-          `${Math.round(
-            `${(parseFloat(storedNumber) + parseFloat(number)) * 100}`
-          ) / 100}`
+          Math.round((parseFloat(storedNumber) + parseFloat(number)) * 100) /
+            100
         );
         setStoredNumber(0);
         // setHistory("");
         break;
       case "subtract":
-        setNumber(
-          `${Math.round(
-            `${(parseFloat(storedNumber) - parseFloat(number)) * 1000}`
-          ) / 1000}`
-        );
+        // If user previously pressed multiply or divide and then the minus sign,
+        // take the minus number and do multiplicatioin / division
+        // instead of subtraction.
+        if (previousFunctionType === "multiply") {
+          setNumber(
+            Math.round(
+              parseFloat(storedNumber) * -Math.abs(parseFloat(number)) * 1000
+            ) / 1000
+          );
+        } else if (previousFunctionType === "divide") {
+          setNumber(
+            Math.round(
+              parseFloat(storedNumber) / -Math.abs(parseFloat(number)) * 1000
+            ) / 1000
+          );
+        } else {
+          setNumber(
+            Math.round((parseFloat(storedNumber) - parseFloat(number)) * 1000) /
+              1000
+          );
+        }
         setStoredNumber(0);
         // setHistory("");
         break;
@@ -149,9 +169,8 @@ const Calculator = props => {
         break;
       case "multiply":
         setNumber(
-          `${Math.round(
-            `${parseFloat(storedNumber) * parseFloat(number) * 1000}`
-          ) / 1000}`
+          Math.round(parseFloat(storedNumber) * parseFloat(number) * 1000) /
+            1000
         );
         setStoredNumber(0);
         // setHistory("");
@@ -162,138 +181,215 @@ const Calculator = props => {
   };
   // , [number, storedNumber, setStoredNumber, setNumber, functionType]);
 
-  const handleClick = id => {
-    console.log("handleClick", id);
-    if (
-      id !== "clear" ||
-      id !== "divide" ||
-      id !== "multiply" ||
-      id !== "subtract" ||
-      id !== "add" ||
-      id !== "decimal" ||
-      id !== "equals"
-    ) {
-      switch (id) {
-        case "zero":
-          setNumber(number => number + 0);
-          // setHistory(history => history + 0);
-          // console.log('history', history);
+  const handleClick = useCallback(
+    id => {
+      console.log("handleClick", id);
+      if (
+        id !== "clear" ||
+        id !== "divide" ||
+        id !== "multiply" ||
+        id !== "subtract" ||
+        id !== "add" ||
+        id !== "decimal" ||
+        id !== "equals"
+      ) {
+        switch (id) {
+          case "zero":
+            setNumber(number => number + 0);
+            // setHistory(history => history + 0);
+            // console.log('history', history);
 
-          // Set only one zero at the beginning.
-          if (number.match(/^0/) && number.length === 1) {
-            setNumber("0");
-            // setHistory('0')
-          }
+            // Set only one zero at the beginning.
+            if (number.match(/^0/) && number.length === 1) {
+              setNumber("0");
+              // setHistory('0')
+            }
 
-          break;
-        case "one":
-          setNumber(number => number + 1);
-          // setHistory(history => history + 1);
-          break;
-        case "two":
-          setNumber(number => number + 2);
-          // setHistory(history => history + number + 2);
-          break;
-        case "three":
-          setNumber(number => number + 3);
-          // setHistory(history => history + number + 3);
-          break;
-        case "four":
-          setNumber(number => number + 4);
-          // setHistory(history => history + number + 4);
-          break;
-        case "five":
-          setNumber(number => number + 5);
-          // setHistory(history => history + number + 5);
-          break;
-        case "six":
-          setNumber(number => number + 6);
-          // setHistory(history => history + number + 6);
-          break;
-        case "seven":
-          setNumber(number => number + 7);
-          // setHistory(history => history + number + 7);
-          break;
-        case "eight":
-          setNumber(number => number + 8);
-          // setHistory(history => history + number + 8);
-          break;
-        case "nine":
-          setNumber(number => number + 9);
-          // setHistory(history => history + number + 9);
-          break;
-        default:
-          break;
+            break;
+          case "one":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-1");
+            } else {
+              setNumber(number => number + 1);
+            }
+            // setHistory(history => history + 1);
+            break;
+          case "two":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-2");
+            } else {
+              setNumber(number => number + 2);
+            }
+            // setHistory(history => history + number + 2);
+            break;
+          case "three":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-3");
+            } else {
+              setNumber(number => number + 3);
+            }
+            // setHistory(history => history + number + 3);
+            break;
+          case "four":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-4");
+            } else {
+              setNumber(number => number + 4);
+            }
+            // setHistory(history => history + number + 4);
+            break;
+          case "five":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-5");
+            } else {
+              setNumber(number => number + 5);
+            }
+            // setHistory(history => history + number + 5);
+            break;
+          case "six":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-6");
+            } else {
+              setNumber(number => number + 6);
+            }
+            // setHistory(history => history + number + 6);
+            break;
+          case "seven":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-7");
+            } else {
+              setNumber(number => number + 7);
+            }
+            // setHistory(history => history + number + 7);
+            break;
+          case "eight":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-8");
+            } else {
+              setNumber(number => number + 8);
+            }
+            // setHistory(history => history + number + 8);
+            break;
+          case "nine":
+            // Set number to minus, if user pressed '-' before number.
+            if (functionType === "subtract") {
+              setNumber("-9");
+            } else {
+              setNumber(number => number + 9);
+            }
+            // setHistory(history => history + number + 9);
+            break;
+          default:
+            break;
+        }
       }
-    }
-    if (
-      id === "clear" ||
-      id === "divide" ||
-      id === "multiply" ||
-      id === "subtract" ||
-      id === "add" ||
-      id === "decimal" ||
-      id === "equals"
-    ) {
-      setFunctionType(id);
-      switch (id) {
-        case "add":
-          setNumber(" ");
-          // setHistory(history => history + " + ");
-          // console.log("add", number, storedNumber);
+      if (
+        id === "clear" ||
+        id === "divide" ||
+        id === "multiply" ||
+        id === "subtract" ||
+        id === "add" ||
+        id === "decimal" ||
+        id === "equals"
+      ) {
+        setFunctionType(id);
+        switch (id) {
+          case "add":
+            console.log("add", id, storedNumber, number);
 
-          setStoredNumber(
-            Math.round((parseFloat(number) + parseFloat(storedNumber)) * 1000) /
-              1000
-          );
-          break;
-        case "subtract":
-          setNumber(" ");
-          // setHistory(history => history + " - ");
-          setStoredNumber(
-            Math.round((parseFloat(number) - parseFloat(storedNumber)) * 1000) /
-              1000
-          );
-          break;
-        case "divide":
-          setNumber(" ");
-          // setHistory(history => history + " / ");
-          if (storedNumber != 0) {
-            setStoredNumber(parseFloat(storedNumber) / parseFloat(number));
-          } else {
-            setStoredNumber(number);
-          }
+            if (number === undefined) {
+              setNumber(" ");
+              break;
+            }
+            setNumber(" ");
+            // setHistory(history => history + " + ");
+            // console.log("add", number, storedNumber);
 
-          break;
-        case "multiply":
-          setNumber(" ");
-          // setHistory(history => history + " * ");
-          if (storedNumber != 0) {
-            setStoredNumber(parseFloat(storedNumber) * parseFloat(number));
-          } else {
-            setStoredNumber(number);
-          }
-          break;
-        case "equals":
-          doTheMath();
-          break;
-        case "decimal":
-          if (number.match(/^[0-9]{0,9}$/)) {
-            setNumber(number => number + ".");
-          }
-          break;
-        case "clear":
-          setNumber("");
-          setStoredNumber(0);
-          // setHistory("");
-          break;
-        default:
-          break;
+            setStoredNumber(
+              Math.round(
+                (parseFloat(number) + parseFloat(storedNumber)) * 1000
+              ) / 1000
+            );
+            break;
+          case "subtract":
+            setPreviousFunctionType(functionType);
+            console.log("subtract functionType", functionType);
+            console.log("subtract number", number);
+            console.log("subtract storedNumber ", storedNumber);
+
+            if (number == " " && storedNumber >= 0) {
+              console.log('number === " " ', number === " ");
+              break;
+            }
+            setNumber(" ");
+            // setHistory(history => history + " - ");
+            setStoredNumber(
+              Math.round(
+                (parseFloat(number) - parseFloat(storedNumber)) * 1000
+              ) / 1000
+            );
+            break;
+          case "divide":
+            if (number === undefined) {
+              break;
+            }
+            setNumber(" ");
+            // setHistory(history => history + " / ");
+
+            // eslint-disable-next-line
+            if (storedNumber != 0) {
+              setStoredNumber(parseFloat(storedNumber) / parseFloat(number));
+            } else {
+              setStoredNumber(number);
+            }
+
+            break;
+          case "multiply":
+            // setHistory(history => history + " * ");
+            console.log("multiply", id, storedNumber, number);
+            // In case user presses two fuction types (=,-,?,*)
+            // one after the other. Get the last one
+            if (number == " " && storedNumber >= 0) {
+              console.log("number === undefined", number === undefined);
+              break;
+            }
+            setNumber(" ");
+            // eslint-disable-next-line
+            if (storedNumber != 0 && !isNaN(number)) {
+              setStoredNumber(parseFloat(storedNumber) * parseFloat(number));
+            } else {
+              setStoredNumber(number);
+            }
+            break;
+          case "equals":
+            doTheMath();
+            break;
+          case "decimal":
+            if (number.match(/^[0-9]{0,9}$/)) {
+              setNumber(number => number + ".");
+            }
+            break;
+          case "clear":
+            setNumber("");
+            setStoredNumber(0);
+            // setHistory("");
+            break;
+          default:
+            break;
+        }
       }
-    }
-  };
-  // [number, setNumber, storedNumber, setStoredNumber, doTheMath]
-  // );
+    },
+    [number, setNumber, storedNumber, setStoredNumber, doTheMath]
+  );
+  console.log("render ......................");
 
   return (
     <div id="head">
