@@ -107,6 +107,13 @@ const Calculator = props => {
   // console.log("storedNumber out", storedNumber);
   // console.log("number out", number);
 
+   // If after zero comes a number replace zero with the number
+  //  if (number.match(/[^0][0-9]/)) {
+  //    console.log('number........', number);
+     
+  //   setNumber(number.split(' ').slice(0,1).join())
+  // }
+
   const doTheMath = useCallback(() => {
     // console.log("number ", number);
     // console.log("storedNumber ", storedNumber);
@@ -119,7 +126,7 @@ const Calculator = props => {
           ) / 100}`
         );
         setStoredNumber(0);
-        setHistory("");
+        // setHistory("");
         break;
       case "subtract":
         setNumber(
@@ -128,7 +135,7 @@ const Calculator = props => {
           ) / 1000}`
         );
         setStoredNumber(0);
-        setHistory("");
+        // setHistory("");
         break;
       case "divide":
         setNumber(
@@ -137,7 +144,7 @@ const Calculator = props => {
           ) / 1000}`
         );
         setStoredNumber(0);
-        setHistory("");
+        // setHistory("");
         break;
       case "multiply":
         setNumber(
@@ -146,7 +153,7 @@ const Calculator = props => {
           ) / 1000}`
         );
         setStoredNumber(0);
-        setHistory("");
+        // setHistory("");
         break;
       default:
         break;
@@ -168,48 +175,51 @@ const Calculator = props => {
         switch (id) {
           case "zero":
             setNumber(number => number + 0);
-            setHistory(history => history + 0);
-              
+            // setHistory(history => history + 0);
+            // console.log('history', history);
+            
+            // Set only one zero at the beginning.
             if (number.match(/^0/) && number.length === 1) {
                 setNumber('0')
-                setHistory('0')
+                // setHistory('0')
               } 
+           
             break;
           case "one":
             setNumber(number => number + 1);
-            setHistory(history => history + 1);
+            // setHistory(history => history + 1);
             break;
           case "two":
             setNumber(number => number + 2);
-            setHistory(history => history + number + 2);
+            // setHistory(history => history + number + 2);
             break;
           case "three":
             setNumber(number => number + 3);
-            setHistory(history => history + number + 3);
+            // setHistory(history => history + number + 3);
             break;
           case "four":
             setNumber(number => number + 4);
-            setHistory(history => history + number + 4);
+            // setHistory(history => history + number + 4);
             break;
           case "five":
             setNumber(number => number + 5);
-            setHistory(history => history + number + 5);
+            // setHistory(history => history + number + 5);
             break;
           case "six":
             setNumber(number => number + 6);
-            setHistory(history => history + number + 6);
+            // setHistory(history => history + number + 6);
             break;
           case "seven":
             setNumber(number => number + 7);
-            setHistory(history => history + number + 7);
+            // setHistory(history => history + number + 7);
             break;
           case "eight":
             setNumber(number => number + 8);
-            setHistory(history => history + number + 8);
+            // setHistory(history => history + number + 8);
             break;
           case "nine":
             setNumber(number => number + 9);
-            setHistory(history => history + number + 9);
+            // setHistory(history => history + number + 9);
             break;
           default:
             break;
@@ -228,7 +238,7 @@ const Calculator = props => {
         switch (id) {
           case "add":
             setNumber(" ");
-            setHistory(history => history + " + ");
+            // setHistory(history => history + " + ");
             setStoredNumber(
               `${Math.round(
                 `${(parseFloat(storedNumber) + parseFloat(number)) * 100}`
@@ -238,7 +248,7 @@ const Calculator = props => {
             break;
           case "subtract":
             setNumber(" ");
-            setHistory(history => history + " - ");
+            // setHistory(history => history + " - ");
             setStoredNumber(
               `${Math.round(
                 `${(parseFloat(storedNumber) - parseFloat(number)) * 1000}`
@@ -249,7 +259,7 @@ const Calculator = props => {
             console.log("divide");
 
             setNumber(" ");
-            setHistory(history => history + " / ");
+            // setHistory(history => history + " / ");
             setStoredNumber(
               `${Math.round(
                 `${(parseFloat(storedNumber) / parseFloat(number)) * 1000}`
@@ -258,7 +268,7 @@ const Calculator = props => {
             break;
           case "multiply":
             setNumber(" ");
-            setHistory(history => history + " * ");
+            // setHistory(history => history + " * ");
             setStoredNumber(
               `${Math.round(
                 `${parseFloat(storedNumber) * parseFloat(number) * 1000}`
@@ -276,7 +286,7 @@ const Calculator = props => {
           case "clear":
             setNumber("");
             setStoredNumber(0);
-            setHistory("");
+            // setHistory("");
             break;
           default:
             break;
@@ -288,7 +298,7 @@ const Calculator = props => {
   return (
     <div id="head">
       <div id="drum-machine">
-        <p id="history">{"< " + history + " >"}</p>
+        {/* <p id="history">{"< " + history + " >"}</p> */}
         <div id="display">
           <strong style={{ textTransform: "capitalize" }}>
             {"< " + number + " >"}
