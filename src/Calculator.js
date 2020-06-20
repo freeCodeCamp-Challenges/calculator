@@ -145,7 +145,7 @@ const Calculator = props => {
         } else if (previousFunctionType === "divide") {
           setNumber(
             Math.round(
-              parseFloat(storedNumber) / -Math.abs(parseFloat(number)) * 1000
+              (parseFloat(storedNumber) / -Math.abs(parseFloat(number))) * 1000
             ) / 1000
           );
         } else {
@@ -208,7 +208,7 @@ const Calculator = props => {
             break;
           case "one":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-1");
             } else {
               setNumber(number => number + 1);
@@ -217,7 +217,7 @@ const Calculator = props => {
             break;
           case "two":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-2");
             } else {
               setNumber(number => number + 2);
@@ -226,7 +226,7 @@ const Calculator = props => {
             break;
           case "three":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-3");
             } else {
               setNumber(number => number + 3);
@@ -235,7 +235,7 @@ const Calculator = props => {
             break;
           case "four":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-4");
             } else {
               setNumber(number => number + 4);
@@ -244,7 +244,7 @@ const Calculator = props => {
             break;
           case "five":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-5");
             } else {
               setNumber(number => number + 5);
@@ -253,7 +253,7 @@ const Calculator = props => {
             break;
           case "six":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-6");
             } else {
               setNumber(number => number + 6);
@@ -262,7 +262,7 @@ const Calculator = props => {
             break;
           case "seven":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-7");
             } else {
               setNumber(number => number + 7);
@@ -271,7 +271,7 @@ const Calculator = props => {
             break;
           case "eight":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-8");
             } else {
               setNumber(number => number + 8);
@@ -280,7 +280,7 @@ const Calculator = props => {
             break;
           case "nine":
             // Set number to minus, if user pressed '-' before number.
-            if (functionType === "subtract") {
+            if (functionType === "subtract" && !previousFunctionType === " ") {
               setNumber("-9");
             } else {
               setNumber(number => number + 9);
@@ -328,14 +328,16 @@ const Calculator = props => {
             if (number == " " && storedNumber >= 0) {
               console.log('number === " " ', number === " ");
               break;
+            } else {
+              setNumber(" ");
+              // setHistory(history => history + " - ");
+              setStoredNumber(
+                Math.round(
+                  (parseFloat(number) - parseFloat(storedNumber)) * 1000
+                ) / 1000
+              );
             }
-            setNumber(" ");
-            // setHistory(history => history + " - ");
-            setStoredNumber(
-              Math.round(
-                (parseFloat(number) - parseFloat(storedNumber)) * 1000
-              ) / 1000
-            );
+
             break;
           case "divide":
             if (number === undefined) {
@@ -380,6 +382,8 @@ const Calculator = props => {
           case "clear":
             setNumber("");
             setStoredNumber(0);
+            setPreviousFunctionType("");
+            setFunctionType("");
             // setHistory("");
             break;
           default:
