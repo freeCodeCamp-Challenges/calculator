@@ -99,17 +99,18 @@ const CalcButtons = props => {
 };
 
 const Calculator = props => {
-  const [number, setNumber] = useState(" ");
+  const [number, setNumber] = useState("0");
   const [storedNumber, setStoredNumber] = useState(0);
-  const [history, setHistory] = useState("");
+  const [history, setHistory] = useState("0");
   const [functionType, setFunctionType] = useState("");
 
-  console.log("storedNumber out", storedNumber);
+  // console.log("storedNumber out", storedNumber);
+  // console.log("number out", number);
 
   const doTheMath = useCallback(() => {
-    console.log("number ", number);
-    console.log("storedNumber ", storedNumber);
-    console.log("functionType", functionType);
+    // console.log("number ", number);
+    // console.log("storedNumber ", storedNumber);
+    // console.log("functionType", functionType);
     switch (functionType) {
       case "add":
         setNumber(
@@ -142,17 +143,17 @@ const Calculator = props => {
         setNumber(
           `${Math.round(
             `${parseFloat(storedNumber) * parseFloat(number) * 1000}`
-            ) / 1000}`
-            );
-            setStoredNumber(0);
-            setHistory("");
+          ) / 1000}`
+        );
+        setStoredNumber(0);
+        setHistory("");
         break;
       default:
         break;
     }
   }, [number, storedNumber, functionType]);
 
-  const handleClick = useCallback(
+  const handleClick = 
     id => {
       console.log("handleClick", id);
       if (
@@ -168,10 +169,15 @@ const Calculator = props => {
           case "zero":
             setNumber(number => number + 0);
             setHistory(history => history + 0);
+              
+            if (number.match(/^0/) && number.length === 1) {
+                setNumber('0')
+                setHistory('0')
+              } 
             break;
           case "one":
             setNumber(number => number + 1);
-            setHistory(history => history  + 1);
+            setHistory(history => history + 1);
             break;
           case "two":
             setNumber(number => number + 2);
@@ -276,9 +282,8 @@ const Calculator = props => {
             break;
         }
       }
-    },
-    [setNumber, number, storedNumber, doTheMath]
-  );
+    }
+    
 
   return (
     <div id="head">
