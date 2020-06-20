@@ -1,14 +1,6 @@
 import React, { useState, useCallback } from "react";
 import "./Styles.css";
 
-// When I try to use context the drum machine disappears
-// I wanted to use it so I won't have to pass the handleDisplay for the keys
-// through props
-//const { Provider, Consumer } = React.createContext(false)
-
-// To modify code, first comment out window.focus()
-// in componentDidMount
-
 const data = [
   {
     id: "clear",
@@ -76,7 +68,7 @@ const data = [
 ];
 
 const CalcButtons = props => {
-  let calcButtonClass = ["drum-pad"];
+  let calcButtonClass = ["culc-buttons"];
   if (props.id === "clear") {
     calcButtonClass.push("clear");
   } else if (props.id === "zero") {
@@ -397,7 +389,7 @@ const Calculator = props => {
 
   return (
     <div id="head">
-      <div id="drum-machine">
+      <div id="caclulator">
         <p id="history">{"< " + storedNumber + " >"}</p>
         <div id="display">
           <strong style={{ textTransform: "capitalize" }}>
