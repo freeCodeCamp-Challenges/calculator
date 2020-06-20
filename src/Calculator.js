@@ -101,7 +101,7 @@ const CalcButtons = props => {
 const Calculator = props => {
   const [number, setNumber] = useState("0");
   const [storedNumber, setStoredNumber] = useState(0);
-  const [history, setHistory] = useState("0");
+  // const [history, setHistory] = useState("0");
   const [functionType, setFunctionType] = useState("");
 
   // console.log("storedNumber out", storedNumber);
@@ -279,7 +279,7 @@ const Calculator = props => {
             doTheMath();
             break;
           case "decimal":
-            if (number.match("\\.?")) {
+            if (number.match(/^-?[0-9]*\.?[0-9]$/)) {
               setNumber(number => number + ".");
             }
             break;
