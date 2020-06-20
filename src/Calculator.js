@@ -145,13 +145,13 @@ const Calculator = props => {
         } else if (previousFunctionType === "divide") {
           setNumber(
             Math.round(
-              (parseFloat(storedNumber) / -Math.abs(parseFloat(number))) * 1000
-            ) / 1000
+              ((parseFloat(storedNumber) / -Math.abs(parseFloat(number))) * 1000
+            ) / 1000).toFixed(4) 
           );
         } else {
           setNumber(
-            Math.round((parseFloat(storedNumber) - parseFloat(number)) * 1000) /
-              1000
+            (Math.round((parseFloat(storedNumber) - parseFloat(number)) * 1000) /
+              1000).toFixed(4) 
           );
         }
         setStoredNumber(0);
@@ -161,8 +161,8 @@ const Calculator = props => {
         // setStoredNumber(number);
         setStoredNumber("0");
         setNumber(
-          Math.round((parseFloat(storedNumber) / parseFloat(number)) * 1000) /
-            1000
+          (Math.round((parseFloat(storedNumber) / parseFloat(number)) * 1000) /
+            1000).toFixed(4) 
         );
         // console.log(' divide', number, storedNumber );
         // setHistory("");
