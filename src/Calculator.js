@@ -104,19 +104,19 @@ const Calculator = props => {
   // const [history, setHistory] = useState("0");
   const [functionType, setFunctionType] = useState("");
 
-  // console.log("storedNumber out", storedNumber);
+  console.log("storedNumber out", storedNumber);
   // console.log("number out", number);
 
-   // If after zero comes a number replace zero with the number
+  // If after zero comes a number replace zero with the number
   //  if (number.match(/[^0][0-9]/)) {
   //    console.log('number........', number);
-     
+
   //   setNumber(number.split(' ').slice(0,1).join())
   // }
 
-  const doTheMath = useCallback(() => {
-    // console.log("number ", number);
-    // console.log("storedNumber ", storedNumber);
+  const doTheMath = () => {
+    console.log("doTheMath number ", number);
+    console.log("doTheMath storedNumber ", storedNumber);
     // console.log("functionType", functionType);
     switch (functionType) {
       case "add":
@@ -138,12 +138,13 @@ const Calculator = props => {
         // setHistory("");
         break;
       case "divide":
+        // setStoredNumber(number);
+        setStoredNumber("0");
         setNumber(
-          `${Math.round(
-            `${(parseFloat(storedNumber) / parseFloat(number)) * 1000}`
-          ) / 1000}`
+          Math.round((parseFloat(storedNumber) / parseFloat(number)) * 1000) /
+            1000
         );
-        setStoredNumber(0);
+        // console.log(' divide', number, storedNumber );
         // setHistory("");
         break;
       case "multiply":
@@ -158,147 +159,146 @@ const Calculator = props => {
       default:
         break;
     }
-  }, [number, storedNumber, functionType]);
+  };
+  // , [number, storedNumber, setStoredNumber, setNumber, functionType]);
 
-  const handleClick = 
-    id => {
-      console.log("handleClick", id);
-      if (
-        id !== "clear" ||
-        id !== "divide" ||
-        id !== "multiply" ||
-        id !== "subtract" ||
-        id !== "add" ||
-        id !== "decimal" ||
-        id !== "equals"
-      ) {
-        switch (id) {
-          case "zero":
-            setNumber(number => number + 0);
-            // setHistory(history => history + 0);
-            // console.log('history', history);
-            
-            // Set only one zero at the beginning.
-            if (number.match(/^0/) && number.length === 1) {
-                setNumber('0')
-                // setHistory('0')
-              } 
-           
-            break;
-          case "one":
-            setNumber(number => number + 1);
-            // setHistory(history => history + 1);
-            break;
-          case "two":
-            setNumber(number => number + 2);
-            // setHistory(history => history + number + 2);
-            break;
-          case "three":
-            setNumber(number => number + 3);
-            // setHistory(history => history + number + 3);
-            break;
-          case "four":
-            setNumber(number => number + 4);
-            // setHistory(history => history + number + 4);
-            break;
-          case "five":
-            setNumber(number => number + 5);
-            // setHistory(history => history + number + 5);
-            break;
-          case "six":
-            setNumber(number => number + 6);
-            // setHistory(history => history + number + 6);
-            break;
-          case "seven":
-            setNumber(number => number + 7);
-            // setHistory(history => history + number + 7);
-            break;
-          case "eight":
-            setNumber(number => number + 8);
-            // setHistory(history => history + number + 8);
-            break;
-          case "nine":
-            setNumber(number => number + 9);
-            // setHistory(history => history + number + 9);
-            break;
-          default:
-            break;
-        }
-      }
-      if (
-        id === "clear" ||
-        id === "divide" ||
-        id === "multiply" ||
-        id === "subtract" ||
-        id === "add" ||
-        id === "decimal" ||
-        id === "equals"
-      ) {
-        setFunctionType(id);
-        switch (id) {
-          case "add":
-            setNumber(" ");
-            // setHistory(history => history + " + ");
-            setStoredNumber(
-              `${Math.round(
-                `${(parseFloat(storedNumber) + parseFloat(number)) * 100}`
-              ) / 100}`
-            );
+  const handleClick = id => {
+    console.log("handleClick", id);
+    if (
+      id !== "clear" ||
+      id !== "divide" ||
+      id !== "multiply" ||
+      id !== "subtract" ||
+      id !== "add" ||
+      id !== "decimal" ||
+      id !== "equals"
+    ) {
+      switch (id) {
+        case "zero":
+          setNumber(number => number + 0);
+          // setHistory(history => history + 0);
+          // console.log('history', history);
 
-            break;
-          case "subtract":
-            setNumber(" ");
-            // setHistory(history => history + " - ");
-            setStoredNumber(
-              `${Math.round(
-                `${(parseFloat(storedNumber) - parseFloat(number)) * 1000}`
-              ) / 1000}`
-            );
-            break;
-          case "divide":
-            console.log("divide");
+          // Set only one zero at the beginning.
+          if (number.match(/^0/) && number.length === 1) {
+            setNumber("0");
+            // setHistory('0')
+          }
 
-            setNumber(" ");
-            // setHistory(history => history + " / ");
-            setStoredNumber(
-              `${Math.round(
-                `${(parseFloat(storedNumber) / parseFloat(number)) * 1000}`
-              ) / 1000}`
-            );
-            break;
-          case "multiply":
-            setNumber(" ");
-            // setHistory(history => history + " * ");
-            setStoredNumber(
-              `${Math.round(
-                `${parseFloat(storedNumber) * parseFloat(number) * 1000}`
-              ) / 1000}`
-            );
-            break;
-          case "equals":
-            doTheMath();
-            break;
-          case "decimal":
-            if (number.match(/^-?[0-9]*\.?[0-9]$/)) {
-              setNumber(number => number + ".");
-            }
-            break;
-          case "clear":
-            setNumber("");
-            setStoredNumber(0);
-            // setHistory("");
-            break;
-          default:
-            break;
-        }
+          break;
+        case "one":
+          setNumber(number => number + 1);
+          // setHistory(history => history + 1);
+          break;
+        case "two":
+          setNumber(number => number + 2);
+          // setHistory(history => history + number + 2);
+          break;
+        case "three":
+          setNumber(number => number + 3);
+          // setHistory(history => history + number + 3);
+          break;
+        case "four":
+          setNumber(number => number + 4);
+          // setHistory(history => history + number + 4);
+          break;
+        case "five":
+          setNumber(number => number + 5);
+          // setHistory(history => history + number + 5);
+          break;
+        case "six":
+          setNumber(number => number + 6);
+          // setHistory(history => history + number + 6);
+          break;
+        case "seven":
+          setNumber(number => number + 7);
+          // setHistory(history => history + number + 7);
+          break;
+        case "eight":
+          setNumber(number => number + 8);
+          // setHistory(history => history + number + 8);
+          break;
+        case "nine":
+          setNumber(number => number + 9);
+          // setHistory(history => history + number + 9);
+          break;
+        default:
+          break;
       }
     }
-    
+    if (
+      id === "clear" ||
+      id === "divide" ||
+      id === "multiply" ||
+      id === "subtract" ||
+      id === "add" ||
+      id === "decimal" ||
+      id === "equals"
+    ) {
+      setFunctionType(id);
+      switch (id) {
+        case "add":
+          setNumber(" ");
+          // setHistory(history => history + " + ");
+          // console.log("add", number, storedNumber);
+
+          setStoredNumber(
+            Math.round((parseFloat(number) + parseFloat(storedNumber)) * 1000) /
+              1000
+          );
+          break;
+        case "subtract":
+          setNumber(" ");
+          // setHistory(history => history + " - ");
+          setStoredNumber(
+            Math.round((parseFloat(number) - parseFloat(storedNumber)) * 1000) /
+              1000
+          );
+          break;
+        case "divide":
+          setNumber(" ");
+          // setHistory(history => history + " / ");
+          if (storedNumber != 0) {
+            setStoredNumber(parseFloat(storedNumber) / parseFloat(number));
+          } else {
+            setStoredNumber(number);
+          }
+
+          break;
+        case "multiply":
+          setNumber(" ");
+          // setHistory(history => history + " * ");
+          if (storedNumber != 0) {
+            setStoredNumber(parseFloat(storedNumber) * parseFloat(number));
+          } else {
+            setStoredNumber(number);
+          }
+          break;
+        case "equals":
+          doTheMath();
+          break;
+        case "decimal":
+          if (number.match(/^[0-9]{0,9}$/)) {
+            setNumber(number => number + ".");
+          }
+          break;
+        case "clear":
+          setNumber("");
+          setStoredNumber(0);
+          // setHistory("");
+          break;
+        default:
+          break;
+      }
+    }
+  };
+  // [number, setNumber, storedNumber, setStoredNumber, doTheMath]
+  // );
 
   return (
     <div id="head">
       <div id="drum-machine">
-        {/* <p id="history">{"< " + history + " >"}</p> */}
+        <p id="history">{"< " + storedNumber + " >"}</p>
         <div id="display">
           <strong style={{ textTransform: "capitalize" }}>
             {"< " + number + " >"}
