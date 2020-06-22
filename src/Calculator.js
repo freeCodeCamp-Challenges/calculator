@@ -128,7 +128,19 @@ const Calculator = props => {
         console.log("opers", opers);
         console.log("opers[i]", opers[i]);
 
-        switch (opers[i]) {
+        let operIndex = i;
+        console.log(
+          isNaN(elems[i + 1]),
+          isNaN(elems[i + 2]),
+          isNaN(elems[i + 3])
+        );
+
+        if (isNaN(elems[i + 1]) && isNaN(elems[i + 2]) && isNaN(elems[i + 3])) {
+          console.log("operIndex");
+          operIndex =+  2; // 0, 1, 2
+        }
+        console.log("opers[i + operIndex]", opers[operIndex]);
+        switch (opers[operIndex]) {
           case "+":
             if (elems[i + 1] === "+" && elems[i + 2] === "-") {
               result = +firstNum + -+secondNum;
