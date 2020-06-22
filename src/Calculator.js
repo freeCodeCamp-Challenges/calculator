@@ -95,7 +95,7 @@ const Calculator = props => {
   const [operators, setOperators] = useState([]);
   const [number, setNumber] = useState("0");
   // console.log("OUT // insertedNumbers ", insertedNumbers);
-  console.log("OUT // operators ", operators);
+  // console.log("OUT // operators ", operators);
 
   const doTheMath = useCallback(() => {
     console.log("DO-MATH");
@@ -111,6 +111,7 @@ const Calculator = props => {
         let result = 0;
         const firstNum = numbers[i];
         const secondNum = numbers[i + 1];
+        // If the are no more numbers, give the firstNum as the result.
         if (secondNum === undefined) {
           setNumber(firstNum);
           return true;
@@ -133,8 +134,9 @@ const Calculator = props => {
         }
         numbers.splice(0, 2);
         opers.splice(0, 1);
+        // Put the result as the firstNum.
         numbers.unshift(result);
-        setNumber(result);
+        // setNumber(result);
         makeCalculations();
 
         return true;
@@ -148,7 +150,7 @@ const Calculator = props => {
 
   const handleClick = useCallback(
     sign => {
-      const removeInitialZero = () => (+number === 0 ? setNumber("") : null);
+      const removeInitialZero = () => (number === "0" ? setNumber("") : null);
 
       const gatherElements = () => {
         console.log("///gatherElements", number);
@@ -173,6 +175,11 @@ const Calculator = props => {
         switch (sign) {
           case "=":
             gatherElements();
+            break;
+          case ".":
+            if (number.match(/^[0-9]{0,9}$/)) {
+              setNumber(number => number + ".");
+            }
             break;
           case "AC":
             setNumber("0");
