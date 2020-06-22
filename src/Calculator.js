@@ -94,17 +94,22 @@ const Calculator = props => {
   const [insertedNumbers, setInsertedNumbers] = useState([]);
   const [operators, setOperators] = useState([]);
   const [number, setNumber] = useState("0");
-  // console.log("OUT // insertedNumbers ", insertedNumbers);
-  // console.log("OUT // operators ", operators);
+  const [elements, setElements] = useState([]);
+
+  console.log("OUT // insertedNumbers ", insertedNumbers);
+  console.log("OUT // operators ", operators);
+  console.log("OUT // elements ", elements);
 
   const doTheMath = useCallback(() => {
     console.log("DO-MATH");
 
     let numbers = [...insertedNumbers];
     let opers = [...operators];
+    let elems = [...elements];
     // Get also the last number and operator.
     numbers.push(number);
     opers.push(operators);
+    elems.push(number); // a number is the last element.
 
     const makeCalculations = () => {
       numbers.map((num, i) => {
@@ -116,18 +121,41 @@ const Calculator = props => {
           setNumber(firstNum);
           return true;
         }
+        console.log("numbers", numbers);
+        console.log("numbers[i]", numbers[i]);
+        console.log("elements", elements);
+        console.log("elems[i]", elems[i]);
+        console.log("opers", opers);
+        console.log("opers[i]", opers[i]);
+
         switch (opers[i]) {
           case "+":
-            result = +firstNum + +secondNum;
+            if (elems[i + 1] === "+" && elems[i + 2] === "-") {
+              result = +firstNum + -+secondNum;
+            } else {
+              result = +firstNum + +secondNum;
+            }
             break;
           case "-":
-            result = +firstNum - +secondNum;
+            if (elems[i + 1] === "-" && elems[i + 2] === "-") {
+              result = +firstNum - -+secondNum;
+            } else {
+              result = +firstNum - +secondNum;
+            }
             break;
           case "*":
-            result = +firstNum * +secondNum;
+            if (elems[i + 1] === "*" && elems[i + 2] === "-") {
+              result = +firstNum * -+secondNum;
+            } else {
+              result = +firstNum * +secondNum;
+            }
             break;
           case "/":
-            result = +firstNum / +secondNum;
+            if (elems[i + 1] === "/" && elems[i + 2] === "-") {
+              result = +firstNum / -+secondNum;
+            } else {
+              result = +firstNum / +secondNum;
+            }
             break;
           default:
             break;
@@ -156,19 +184,26 @@ const Calculator = props => {
         console.log("///gatherElements", number);
         if (sign === "+" || sign === "-" || sign === "*" || sign === "/") {
           console.log('if (sign === "+"....', sign);
-
           setOperators([...operators, sign]);
+          setElements([...insertedNumbers, ...operators, sign]);
         }
-        setInsertedNumbers([...insertedNumbers, number]);
+        if (insertedNumbers.length >= 0 && number !== "0") {
+          setInsertedNumbers([...insertedNumbers, number]);
+          setElements([...elements, number]);
+        }
+
         if (sign === "=") {
           doTheMath();
         }
       };
 
       if (!isNaN(+sign)) {
+        console.log("!isNaN(+sign) elements", elements);
+
         removeInitialZero();
         setNumber(num => num + sign);
       } else if (sign === "+" || sign === "-" || sign === "*" || sign === "/") {
+        console.log("gatherElements - setNumber", sign, number);
         gatherElements();
         setNumber("0");
       } else {
@@ -185,6 +220,7 @@ const Calculator = props => {
             setNumber("0");
             setInsertedNumbers([]);
             setOperators([]);
+            setElements([]);
             break;
           default:
             break;
