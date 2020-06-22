@@ -93,77 +93,96 @@ const CalcButtons = props => {
 const Calculator = props => {
   const [element, setElement] = useState([]);
   const [number, setNumber] = useState("0");
-  // console.log("OUT // element ", element);
+  console.log("OUT // element ", element);
 
   const doTheMath = () => {
     let numbers = [];
     let operators = [];
     element.map(el => {
-      // console.log("el", el);
       if (!isNaN(el)) {
         numbers.push(el);
       } else {
-        console.log(isNaN(el), el);
-
         operators.push(el);
       }
     });
-    numbers.map((num, i) => {
-      const firstNum = numbers[0];
-      const firstOperator = operators[0];
-      const secondNum = numbers[1];
-      let result = 0;
 
-      switch (firstOperator) {
-        case "+":
-          result = +firstNum + +secondNum;
-          break;
-        case "-":
-          result = +firstNum - +secondNum;
-          break;
-        case "*":
-          result = +firstNum * +secondNum;
-          break;
-        case "/":
-          result = +firstNum / +secondNum;
-          break;
+    const makeCalculations = () => {
+      if (numbers.length > 0) {
+        numbers.map((num, i) => {
+          let result = null;
+          const firstNum = numbers[0];
+          const operator = operators[0];
+          let secondNum = numbers[1];
+          if (secondNum === undefined) {
+            secondNum = result;
+          }
 
-        default:
-          break;
+          switch (operator) {
+            case "+":
+              result = +firstNum + +secondNum;
+              break;
+            case "-":
+              result = +firstNum - +secondNum;
+              break;
+            case "*":
+              result = +firstNum * +secondNum;
+              break;
+            case "/":
+              result = +firstNum / +secondNum;
+              break;
+            default:
+              break;
+          }
+
+          numbers.splice(0, 2);
+          operators.splice(0, 1);
+
+          console.log("firstNum", firstNum, "firstoperator ", operator);
+          console.log("secondNum", secondNum);
+          console.log("RESULT ", result);
+          makeCalculations();
+        });
       }
-console.log('RESULT ', result);
-
-      console.log("firstNum", firstNum, "firstoperator ", firstOperator);
-    });
+    };
 
     console.log("numbers ", numbers, "operators ", operators);
+    makeCalculations();
   };
 
   const handleClick = sign => {
-    switch (sign) {
-      case "=":
-        doTheMath();
-        break;
-      case "AC":
-        setNumber("0");
-        setElement([]);
-        break;
+    const removeInitialZero = () => (+number === 0 ? setNumber("") : null);
 
-      default:
-        break;
-    }
-    // Remove initial zero.
-    if (+number === 0) {
-      setNumber("");
-    }
+    const gatherElements = () => {
+      setElement([...element, number]);
+    };
 
-    if (sign !== "AC" && sign !== "=") {
+    if (!isNaN(+sign)) {
+      removeInitialZero();
       setNumber(num => num + sign);
-      setElement([...element, sign]);
+    } else if (sign === '+' || sign === '-' || sign === '*' || sign === '/') {
+      gatherElements();
+      setNumber("0");
+    } else {
+      switch (sign) {
+        case "=":
+          gatherElements();
+          doTheMath();
+          break;
+        case "AC":
+          setNumber("0");
+          setElement([]);
+          break;
+        default:
+          break;
+      }
     }
+
+    // Remove initial zero.
+    // if (+number === 0) {
+    //   setNumber("");
+    // }
   };
 
-  console.log("render ......................");
   return (
     <div id="head">
       <div id="caclulator">
