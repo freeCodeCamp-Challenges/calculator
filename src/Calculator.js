@@ -186,7 +186,7 @@ const Calculator = props => {
     // console.log("numbers ", numbers, "operators ", operators);
 
     makeCalculations();
-  }, [insertedNumbers, number, operators]);
+  }, [insertedNumbers, number, operators, elements]);
 
   const handleClick = useCallback(
     sign => {
@@ -245,7 +245,8 @@ const Calculator = props => {
       doTheMath,
       number,
       insertedNumbers,
-      operators
+      operators,
+      elements
     ]
   );
 
