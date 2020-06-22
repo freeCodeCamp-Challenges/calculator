@@ -91,97 +91,108 @@ const CalcButtons = props => {
 };
 
 const Calculator = props => {
-  const [element, setElement] = useState([]);
+  const [insertedNumbers, setInsertedNumbers] = useState([]);
+  const [operators, setOperators] = useState([]);
   const [number, setNumber] = useState("0");
-  console.log("OUT // element ", element);
+  // console.log("OUT // insertedNumbers ", insertedNumbers);
+  console.log("OUT // operators ", operators);
 
-  const doTheMath = () => {
-    let numbers = [];
-    let operators = [];
-    element.map(el => {
-      if (!isNaN(el)) {
-        numbers.push(el);
-      } else {
-        operators.push(el);
-      }
-    });
+  const doTheMath = useCallback(() => {
+    console.log("DO-MATH");
+
+    let numbers = [...insertedNumbers];
+    let opers = [...operators];
+    // Get also the last number and operator.
+    numbers.push(number);
+    opers.push(operators);
 
     const makeCalculations = () => {
-      if (numbers.length > 0) {
-        numbers.map((num, i) => {
-          let result = null;
-          const firstNum = numbers[0];
-          const operator = operators[0];
-          let secondNum = numbers[1];
-          if (secondNum === undefined) {
-            secondNum = result;
-          }
+      numbers.map((num, i) => {
+        let result = 0;
+        const firstNum = numbers[i];
+        const secondNum = numbers[i + 1];
+        if (secondNum === undefined) {
+          setNumber(firstNum);
+          return true;
+        }
+        switch (opers[i]) {
+          case "+":
+            result = +firstNum + +secondNum;
+            break;
+          case "-":
+            result = +firstNum - +secondNum;
+            break;
+          case "*":
+            result = +firstNum * +secondNum;
+            break;
+          case "/":
+            result = +firstNum / +secondNum;
+            break;
+          default:
+            break;
+        }
+        numbers.splice(0, 2);
+        opers.splice(0, 1);
+        numbers.unshift(result);
+        setNumber(result);
+        makeCalculations();
 
-          switch (operator) {
-            case "+":
-              result = +firstNum + +secondNum;
-              break;
-            case "-":
-              result = +firstNum - +secondNum;
-              break;
-            case "*":
-              result = +firstNum * +secondNum;
-              break;
-            case "/":
-              result = +firstNum / +secondNum;
-              break;
-            default:
-              break;
-          }
-
-          numbers.splice(0, 2);
-          operators.splice(0, 1);
-
-          console.log("firstNum", firstNum, "firstoperator ", operator);
-          console.log("secondNum", secondNum);
-          console.log("RESULT ", result);
-          makeCalculations();
-        });
-      }
+        return true;
+      });
     };
 
-    console.log("numbers ", numbers, "operators ", operators);
+    // console.log("numbers ", numbers, "operators ", operators);
+
     makeCalculations();
-  };
+  }, [insertedNumbers, number, operators]);
 
-  const handleClick = sign => {
-    const removeInitialZero = () => (+number === 0 ? setNumber("") : null);
+  const handleClick = useCallback(
+    sign => {
+      const removeInitialZero = () => (+number === 0 ? setNumber("") : null);
 
-    const gatherElements = () => {
-      setElement([...element, number]);
-    };
+      const gatherElements = () => {
+        console.log("///gatherElements", number);
+        if (sign === "+" || sign === "-" || sign === "*" || sign === "/") {
+          console.log('if (sign === "+"....', sign);
 
-    if (!isNaN(+sign)) {
-      removeInitialZero();
-      setNumber(num => num + sign);
-    } else if (sign === '+' || sign === '-' || sign === '*' || sign === '/') {
-      gatherElements();
-      setNumber("0");
-    } else {
-      switch (sign) {
-        case "=":
-          gatherElements();
+          setOperators([...operators, sign]);
+        }
+        setInsertedNumbers([...insertedNumbers, number]);
+        if (sign === "=") {
           doTheMath();
-          break;
-        case "AC":
-          setNumber("0");
-          setElement([]);
-          break;
-        default:
-          break;
-      }
-    }
+        }
+      };
 
-    // Remove initial zero.
-    // if (+number === 0) {
-    //   setNumber("");
-    // }
-  };
+      if (!isNaN(+sign)) {
+        removeInitialZero();
+        setNumber(num => num + sign);
+      } else if (sign === "+" || sign === "-" || sign === "*" || sign === "/") {
+        gatherElements();
+        setNumber("0");
+      } else {
+        switch (sign) {
+          case "=":
+            gatherElements();
+            break;
+          case "AC":
+            setNumber("0");
+            setInsertedNumbers([]);
+            setOperators([]);
+            break;
+          default:
+            break;
+        }
+      }
+    },
+    [
+      setInsertedNumbers,
+      setNumber,
+      doTheMath,
+      number,
+      insertedNumbers,
+      operators
+    ]
+  );
 
   return (
     <div id="head">
