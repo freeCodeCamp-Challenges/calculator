@@ -139,7 +139,7 @@ const Calculator = props => {
           isNaN(elems[i + 3])
         );
         // If user presses 3 operators in a row,
-        // take the last elment of the operators.
+        // use the last element of the operators.
         if (isNaN(elems[i + 1]) && isNaN(elems[i + 2]) && isNaN(elems[i + 3])) {
           // console.log("operIndex");
           operIndex = +2; // 0, 1, 2
@@ -217,9 +217,6 @@ const Calculator = props => {
         }
         
         makeCalculations();
-        // setEqualsSign(false); // in case user coninues after getting a result
-        
-        
         return true;
       });
       
@@ -273,8 +270,6 @@ const Calculator = props => {
           case "=":
             setEqualsSign([...equalsSign, sign]);
             console.log('In = elements', elements, " sign", sign);
-
-            // setElements([...elements, ...operators, sign])
             gatherElements();
             break;
           case ".":

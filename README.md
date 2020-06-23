@@ -1,11 +1,10 @@
 A Calculator for FrontEnd Libraries certificate from freeCodeCamp.
 
+See the project in codepen: [Calculator](https://codepen.io/fooTios/pen/eYJvYVE?editors=0100)
 
-todo:
+The rest is from the freeCodeCamp challenge.
 
-- hide initial zero when user inserts a number, maybe by changing the type from stirng to nubmer.
-
-### Front End Libraries Projects - Build a JavaScript Calculator
+### [Front End Libraries Projects - Build a JavaScript Calculator](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)
 
 Objective: Build a CodePen.io app that is functionally similar to this: https://codepen.io/freeCodeCamp/full/wgGVVX.
 
