@@ -68,20 +68,20 @@ const data = [
 ];
 
 const CalcButtons = props => {
-  let calcButtonClass = ["culc-buttons"];
+  let calcButtonClass = '';
   if (props.id === "clear") {
-    calcButtonClass.push("clear");
+    calcButtonClass = "clear";
   } else if (props.id === "zero") {
-    calcButtonClass.push("zero");
+    calcButtonClass = "zero";
   } else if (props.id === "equals") {
-    calcButtonClass.push("equals");
+    calcButtonClass = "equals";
   } else {
-    calcButtonClass.push("normal");
+    calcButtonClass = "normal";
   }
 
   return (
     <button
-      className={calcButtonClass.join(" ")}
+      className={`culc-buttons ${calcButtonClass}`}
       id={props.id}
       onClick={props.onClick}
     >
@@ -229,7 +229,7 @@ const Calculator = props => {
 
     makeCalculations();
     elems.push(elements[elements.length - 1]);
-  }, [insertedNumbers, number, operators, elements]);
+  }, [insertedNumbers, number, operators, elements, equalsSign]);
 
   const handleClick = useCallback(
     sign => {
@@ -302,7 +302,8 @@ const Calculator = props => {
       number,
       insertedNumbers,
       operators,
-      elements
+      elements,
+      equalsSign
     ]
   );
 
